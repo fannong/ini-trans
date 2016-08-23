@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="">
+<link rel="import" href="./bower_components/polymer/polymer.html">
+<link rel="import" href="./bower_components/chart-elements/chart-elements.html">
+<script src="./ini.js"></script>
+
+<dom-module id="ini-trans">
+  <template>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'ini-trans',
+
+      properties: {
+        // eol: {
+        //   type:String,
+        //   computed:'_computedEol(platform)'
+        // },
+        // platform: {
+        //   type:String,
+        // },
+
+        /*用户传入ini数据文件，*/
+        iniContent: {
+          type:String,
+          notify: true
+        },
+        /*将iniContent经处理后变成Object对象，可供chartLine组件处理*/
+        iniData: {
+          type:Object,
+          notify: true,
+          computed:'_iniTransToData(iniContent)'
+        }
+      },
+
+      /*根据用户平台信息返回eol值*/
+      // _computedEol: function(platform) {
+      //   var Eol = platform == "win32" ? "\r\n" : "\n";
+      //   return Eol;
+      // },
+
+      _iniTransToData: function(iniContent) {
+        console.log(iniContent);
+        var obj = decode(iniContent);
+        console.log(obj);
+        return obj;
+      },
+
+    })
+  </script>
+</dom-module>

@@ -1,0 +1,46 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>ini-trans test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../bower_components/web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../ini-trans.html">
+  </head>
+  <body>
+
+    <test-fixture id="basic">
+      <template>
+        <ini-trans></ini-trans>
+      </template>
+    </test-fixture>
+
+    <script>
+      'use strict'
+
+      suite('ini-trans test', () => {
+        let iniTrans;
+
+        setup(() => {
+          iniTrans = fixture('basic');
+        });
+
+        // test('_computedEol done', () => {
+        //   // var Eol = iniTrans._computedEol("win32");
+        //   assert.equal(iniTrans._computedEol("win32"), "\r\n");
+        // });
+
+        test('_iniTransToData done', () => {
+          // iniTrans.platform = "win32";
+          iniTrans.iniContent = '[paths.default]\r\ndatadir = /var/lib/data\r\narray[] = first value';
+          var result = iniTrans._iniTransToData();
+          assert.equal(result.paths.default.datadir,  '/var/lib/data');
+        });
+
+      });
+    </script>
+  </body>
+</html>

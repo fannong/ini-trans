@@ -12,13 +12,7 @@
       is: 'ini-trans',
 
       properties: {
-        // eol: {
-        //   type:String,
-        //   computed:'_computedEol(platform)'
-        // },
-        // platform: {
-        //   type:String,
-        // },
+
 
         /*用户传入ini数据文件，*/
         iniContent: {
@@ -34,11 +28,6 @@
       },
 
       /*根据用户平台信息返回eol值*/
-      // _computedEol: function(platform) {
-      //   var Eol = platform == "win32" ? "\r\n" : "\n";
-      //   return Eol;
-      // },
-
       _iniTransToData: function(iniContent) {
         console.log(iniContent);
         var obj = decode(iniContent);

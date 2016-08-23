@@ -1,0 +1,213 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="./ini-trans.html">
+<link rel="stylesheet" href="./inistyle.css">
+
+<dom-module id="ini-list">
+    <template>
+    <style>
+    body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        background: #fff;
+        color: #555;
+        font-size: 14px;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+    }
+    td, th, caption {
+        font-size: 14px;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: normal;
+        font-size: 100%;
+    }
+    address, caption, cite, code, dfn, em, strong, th, var {
+        font-style: normal;
+        font-weight: normal;
+    }
+    a {
+        color: #555;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    img {
+        border: none;
+    }
+    ol, ul, li {
+        list-style: none;
+    }
+    input, textarea, select, button {
+        font: 14px Verdana, Helvetica, Arial, sans-serif;
+    }
+    table {
+    }
+    html {
+        overflow-y: scroll;
+    }
+    #ini-list {
+        margin: 0 auto;
+        height: auto;
+        width: 500px;
+        border-bottom: none;
+        text-align: center;
+    }
+    tr  {
+        height: 22px;
+        line-height: 18px;
+    }
+    .ini-list-header {
+        background-color: #dbd9d9;
+        border-radius: 20px;
+        height: 50px;
+        font-weight: bold;
+    }
+    #ini-list-header-Sec{
+      background-color: #dbd9d9;
+      height: 20px;
+      text-align: center;
+    }
+    .ini-list-header td {
+        font-size: 20px;
+    }
+    #serial {
+        width: 60px;
+    }
+    #L-sec {
+        width: 90px;
+    }
+    #R-par #Para-Value{
+        width: 350px;
+    }
+    #Pnothing{
+      width:60px;
+      text-align: center;
+    }
+    #Para-Nothing{
+      width: 90px;
+      text-align: center;
+    }
+    #Para-Value{
+      width: 350px;
+    }
+    .paraname .paravalue{
+      width:175px;
+      text-align: center;
+      display: inline-block;;
+    }
+    #dom-paraname #dom-paravalue{
+      width:175px;
+      text-align: center;
+      display: inline-block;;
+    }{
+      width:175px;
+      text-align: center;
+      display: inline-block;;
+    }
+    .ini-list-value {
+        height: auto;
+        text-align: center;
+    }
+    .ini-list-value:nth-child(odd){
+        background-color: #f4f2f2;
+    }
+    .section {
+        width: 90px;
+        height: inherit;
+        text-align: center;
+    }
+    .parameters {
+        height: inherit;
+    }
+    </style>
+
+        <ini-trans ini-content=[[iniContent]] ini-data="{{_iniData}}"></ini-trans>
+        <!--iniContent通过属性暴露，接收外部传入的文件，ini-data与_iniData双向绑定,若改变_iniData值可以影响ini-trans组件里的值-->
+        <div id="ini-list">
+            <table>
+                <tr class="ini-list-header">
+                    <td id="serial">序号</td>
+                    <td id="L-sec">section</td>
+                    <td id="R-par">parameters</td>
+                </tr>
+                <tr id="ini-list-header-Sec">
+                    <td id="Pnothing">--</td>
+                    <td id="Para-Nothing">--</td>
+                    <td id="Para-Value">
+                      <span class="paraname">parametersValue</span>
+                      <span class="paravalue">parametersValue</span>
+                    </td>
+                </tr>
+                <template is="dom-repeat" items="{{_iniArray}}">
+                    <tr class="ini-list-value">
+                        <td>{{index}}</td>
+                        <td class="section">{{item.sectionName}}</td>
+                        <td class="parameters">
+                            <template is="dom-repeat" items="{{item.sectionValue}}">
+                                <span id="dom-paraname">{{item.parametersName}}</span>
+                                <span id="dom-paravalue">{{item.parametersValue}}</span>
+                            </template>
+                        </td>
+                    </tr>
+                </template>
+            </table>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: "ini-list",
+
+            properties: {
+                _iniData: {
+                    type: Object,
+                },
+                _iniArray: {
+                    type: Array,
+                    computed: '_computeIniArray(_iniData)'
+                },
+                iniContent: {
+                    type: Object,
+                    notify: true
+                }
+            },
+
+            _computeIniArray: function(_iniData) {
+                    var sectionArr = [];
+                    for (var key in _iniData) {
+                        var parametersArr = [];
+                        var parameters = _iniData[key];
+                        for (var num in parameters) {
+                            var parametersChild = parameters[num];
+                            /* 如果ini文件的section名为单字符串 if条件合适*/
+                            if (typeof(parametersChild) === "string") {
+                                parametersArr.push({
+                                  parametersName: num,
+                                  parametersValue: parameters[num]
+                                });
+                                sectionArr.push({
+                                  sectionName: key,
+                                  sectionValue: parametersArr
+                                });
+                            }
+                            /* 如果ini文件的section名为section.setion格式 else条件合适*/
+                            else {
+                              for(var x in parametersChild){
+                                parametersArr.push({
+                                  parametersName:x,
+                                  parametersValue:parametersChild[x]
+                                })
+                                sectionArr.push({
+                                  sectionName:key + "." + num,
+                                  sectionValue:parametersArr
+                                })
+                              }
+                            }
+                        }
+                    }
+                    return sectionArr;
+                  }
+        })
+    </script>
+</dom-module>

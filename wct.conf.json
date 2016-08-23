@@ -1,0 +1,10 @@
+{
+  "suites": ["test"],
+  "skipUpdateCheck": true,
+  "plugins": {
+    "local": {
+      "skipSeleniumInstall": true,
+      "browsers": ["chrome"]
+    }
+  }
+}

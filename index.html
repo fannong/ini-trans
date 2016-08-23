@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>index</title>
+    <link rel="import" href="bower_components/polymer/polymer.html">
+    <link rel="import" href="./ini-list.html">
+    <!-- <link rel="import" href="./ini-trans.html"> -->
+    <!-- <link rel="import" href="./dom-list.html"> -->
+
+  </head>
+  <body>
+    <ini-list id="list"></ini-list>
+    <!-- <dom-list></dom-list> -->
+
+    <script>
+      document.querySelector('#list').iniContent = '[database]\nuser = bduser\n[database2]\nuser2 = bduser2\n[database3]\nuser3 = bduser3\n[database4.default]\nuser4 = bduser4';
+    </script>
+  </body>
+</html>
